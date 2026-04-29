@@ -1,0 +1,8 @@
+station,R2,learning_rate,optimizer,lstm_units,dropout_rate
+kelapa_gading,0.6344264641393034,0.001,adam,16,0.1
+bundaran_hi,0.5967562735593666,0.001,adam,16,0.0
+kebun_jeruk,0.5918504290423781,0.001,adam,16,0.0
+jagakarsa,0.4887384901850794,0.001,adam,16,0.2
+us_embassy_2,0.4158225603262248,0.001,adam,16,0.1
+lubang_buaya,0.01709133224109327,0.001,adam,32,0.0
+us_embassy_1,-0.21730578212215024,0.001,adam,32,0.2

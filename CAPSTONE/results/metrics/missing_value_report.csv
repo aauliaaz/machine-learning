@@ -1,0 +1,9 @@
+station,n_rows,missing_ISPU PM2.5,missing_AOD,missing_temp,missing_dew,missing_humidity,missing_precip,missing_windspeed
+us_embassy_1,1096,102,270,0,0,0,0,0
+us_embassy_2,1096,260,285,0,0,0,0,0
+jakarta_gbk,1096,726,291,0,0,0,0,0
+bundaran_hi,1096,201,291,0,0,0,0,0
+kelapa_gading,1096,201,246,0,0,0,0,0
+jagakarsa,1096,201,269,0,0,0,0,0
+lubang_buaya,1096,201,278,0,0,0,0,0
+kebun_jeruk,1096,201,292,0,0,0,0,0
