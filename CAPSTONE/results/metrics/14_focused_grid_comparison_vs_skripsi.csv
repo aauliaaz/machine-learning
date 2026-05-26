@@ -1,0 +1,4 @@
+station,old_skripsi_R2,focused_grid_best_R2,delta_vs_skripsi,status,feature_set,variant,lookback,seed,lstm_units,dropout_rate,optimizer,learning_rate,activation,batch_size,test_RMSE,test_MAE,persistence_test_R2
+us_embassy_2,0.6579,0.7072113695239242,0.04931136952392412,naik,calendar,kalman_slow,60,42,32,0.0,adam,0.001,tanh,8,14.082193242768206,10.299256648697526,0.6406778105833403
+kelapa_gading,0.7774,0.8129705985355682,0.03557059853556821,naik,calendar,no_smooth,75,42,32,0.1,adam,0.0005,tanh,4,10.839295917450896,7.451639094241222,0.8006160049231791
+bundaran_hi,0.7748,0.7772479688701539,0.0024479688701538604,naik,calendar,no_smooth,60,42,32,0.1,adam,0.001,tanh,4,11.513157803400915,7.991413638857071,0.7558225401455025

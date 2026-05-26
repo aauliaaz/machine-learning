@@ -1,4 +1,3 @@
-"""Optuna hyperparameter tuning untuk LSTM."""
 from __future__ import annotations
 
 import numpy as np
@@ -11,13 +10,13 @@ from .model import build_lstm, set_seed, train_model
 from .preprocessing import inverse_target
 
 
-# Skor yang dikembalikan ketika trial menghasilkan NaN/Inf — sangat rendah
-# tapi bukan -inf agar TPE sampler tetap bisa belajar arah ruang pencarian.
+# Skor yang dikembalikan ketika trial menghasilkan NaN/Inf sangat rendah
+# tapi bukan -inf agar TPE sampler tetap bisa learning arah ruang pencarian
 _BAD_SCORE = -1e6
 
 
 def _safe_predict(model, X: np.ndarray) -> np.ndarray | None:
-    """Prediksi yang mengembalikan None jika output mengandung NaN/Inf."""
+
     y_pred = model.predict(X, verbose=0).flatten()
     if not np.all(np.isfinite(y_pred)):
         return None
@@ -88,14 +87,14 @@ def run_optuna(
     study.optimize(
         make_objective(data, epochs, batch_size, patience),
         n_trials=n_trials,
-        # Jangan biarkan exception (mis. memori) menghentikan study
+      
         catch=(ValueError, RuntimeError),
     )
     return study
 
 
 def fit_best(study: optuna.Study, data: dict, epochs: int = 100, batch_size: int = 4, patience: int = 15):
-    """Latih ulang model terbaik dari hasil Optuna pada train+val, lalu kembalikan model & history."""
+
     n_features = data["X_train"].shape[2]
     set_seed()
     model = build_lstm(input_shape=(C.LOOKBACK, n_features), **study.best_params)

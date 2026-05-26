@@ -1,8 +1,4 @@
-"""Memuat dan men-sinkronisasi dataset gabungan PM2.5 + AOD + cuaca per stasiun.
 
-Menggunakan file CSV yang sudah ada di
-`Data Penelitian/data gabungan aod cuaca pm2.5/<station>.csv` (TIDAK diubah).
-"""
 from __future__ import annotations
 
 import pandas as pd
@@ -11,7 +7,7 @@ from . import config as C
 
 
 def load_station(station: str) -> pd.DataFrame:
-    """Baca CSV gabungan untuk satu stasiun, parse tanggal, urutkan, drop duplikat."""
+   
     if station not in C.STATIONS:
         raise KeyError(f"Stasiun '{station}' tidak dikenal. Pilih: {list(C.STATIONS)}")
 
@@ -27,10 +23,7 @@ def load_station(station: str) -> pd.DataFrame:
 
 
 def reindex_daily(df: pd.DataFrame) -> pd.DataFrame:
-    """Pastikan index harian kontinu — gap akan jadi baris NaN.
-
-    Penting untuk cek sinkronisasi waktu sebelum imputasi.
-    """
+ 
     full_idx = pd.date_range(df[C.DATE_COL].min(), df[C.DATE_COL].max(), freq="D")
     out = (
         df.set_index(C.DATE_COL)

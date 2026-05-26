@@ -1,8 +1,3 @@
-"""Feature engineering untuk meningkatkan prediksi PM2.5.
-
-Semua fitur **causal** — hanya menggunakan data masa lalu, sehingga tidak
-ada leakage saat dipakai untuk forecasting real-time.
-"""
 from __future__ import annotations
 
 from typing import Iterable
@@ -13,18 +8,14 @@ import pandas as pd
 from . import config as C
 
 
-# ---------- Lag features ----------
+# Lag features
 
 def add_lag_features(
     df: pd.DataFrame,
     cols: Iterable[str],
     lags: Iterable[int] = (1, 7, 14),
 ) -> pd.DataFrame:
-    """Tambah kolom `<col>_lag<k>` = nilai k hari sebelumnya.
-
-    Lag-1 sangat informatif untuk PM2.5 karena polusi udara persistent
-    (hari ini sangat mirip kemarin).
-    """
+    
     out = df.copy()
     for col in cols:
         if col not in out.columns:
@@ -34,7 +25,7 @@ def add_lag_features(
     return out
 
 
-# ---------- Rolling statistics ----------
+# Rolling statistics
 
 def add_rolling_features(
     df: pd.DataFrame,
@@ -42,11 +33,7 @@ def add_rolling_features(
     windows: Iterable[int] = (7, 14),
     stats: Iterable[str] = ("mean", "std"),
 ) -> pd.DataFrame:
-    """Tambah rolling statistics. `shift(1)` agar tidak menggunakan nilai saat ini.
 
-    Rolling mean/std menangkap tren dan volatilitas baru-baru ini, yang
-    membantu LSTM untuk fitur yang berubah lambat.
-    """
     out = df.copy()
     for col in cols:
         if col not in out.columns:
@@ -67,7 +54,7 @@ def add_rolling_features(
     return out
 
 
-# ---------- Calendar features (cyclic encoding) ----------
+# Calendar features (cyclic encoding)
 
 def add_calendar_features(
     df: pd.DataFrame,

@@ -1,4 +1,3 @@
-"""Evaluasi metrik (R², MSE, MAE) pada **skala asli** + plotting."""
 from __future__ import annotations
 
 from pathlib import Path

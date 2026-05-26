@@ -1,4 +1,3 @@
-"""Grid search utilities untuk baseline LSTM."""
 from __future__ import annotations
 
 from itertools import product
@@ -30,12 +29,7 @@ def _score_split(
     n_features: int,
     inverse_scale: bool = True,
 ) -> dict:
-    """Hitung metrik pada satu split, opsional pada skala asli.
 
-    Jika prediksi divergen (NaN/Inf — biasanya akibat exploding gradient
-    pada lr besar + relu LSTM), kembalikan metrik sentinel agar Grid Search
-    tetap berjalan dan kombinasi rusak terlihat di tabel.
-    """
     y_pred = model.predict(X, verbose=0).flatten()
     y_true = y
 
@@ -63,12 +57,7 @@ def grid_search(
     selection_metric: str = "val_R2",
     verbose: int = 0,
 ) -> tuple[pd.DataFrame, dict]:
-    """Jalankan grid search untuk satu dataset stasiun.
 
-    Semua kombinasi dievaluasi pada split validasi dan test.
-    Model terbaik dipilih dengan `selection_metric`, default `val_R2`,
-    agar set test tetap dipakai hanya untuk evaluasi akhir.
-    """
     grid = grid or DEFAULT_GRID
     keys = list(grid.keys())
     combos = list(product(*[grid[k] for k in keys]))

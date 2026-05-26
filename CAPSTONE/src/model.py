@@ -1,4 +1,3 @@
-"""Arsitektur LSTM dan helper training."""
 from __future__ import annotations
 
 from typing import Literal
@@ -6,7 +5,7 @@ from typing import Literal
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import Input
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam, RMSprop
@@ -21,19 +20,17 @@ def build_lstm(
     optimizer: Literal["adam", "rmsprop"] = "adam",
     learning_rate: float = 1e-3,
     clipnorm: float = 1.0,
+    activation: Literal["relu", "tanh"] = "relu",
+    dense_units: int = 25,
 ) -> Sequential:
-    """Arsitektur sama dengan skripsi (Gambar 5) — 2 LSTM + Dense(25) + Dense(1).
 
-    `clipnorm` ditambahkan untuk mencegah exploding gradient (NaN) saat
-    dikombinasikan dengan aktivasi relu pada LSTM.
-    """
     model = Sequential([
         Input(shape=input_shape),
-        LSTM(lstm_units, activation="relu", return_sequences=True),
+        LSTM(lstm_units, activation=activation, return_sequences=True),
         Dropout(dropout_rate),
-        LSTM(lstm_units, activation="relu", return_sequences=False),
+        LSTM(lstm_units, activation=activation, return_sequences=False),
         Dropout(dropout_rate),
-        Dense(25, activation="relu"),
+        Dense(dense_units, activation="relu"),
         Dense(1),
     ])
     opt_kwargs = {"learning_rate": learning_rate, "clipnorm": clipnorm}
@@ -52,11 +49,25 @@ def train_model(
     batch_size: int = 4,
     patience: int = 15,
     checkpoint_path: str | None = None,
+    reduce_lr: bool = False,
+    reduce_lr_patience: int = 7,
+    reduce_lr_factor: float = 0.5,
+    min_lr: float = 1e-5,
     verbose: int = 0,
 ):
     callbacks = [EarlyStopping(monitor="val_loss", patience=patience, restore_best_weights=True)]
     if checkpoint_path:
         callbacks.append(ModelCheckpoint(checkpoint_path, monitor="val_loss", save_best_only=True))
+    if reduce_lr:
+        callbacks.append(
+            ReduceLROnPlateau(
+                monitor="val_loss",
+                factor=reduce_lr_factor,
+                patience=reduce_lr_patience,
+                min_lr=min_lr,
+                verbose=0,
+            )
+        )
 
     history = model.fit(
         X_train, y_train,
